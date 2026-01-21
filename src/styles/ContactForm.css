@@ -1,0 +1,259 @@
+.contact-section {
+  margin-top: 30px;
+  animation: glassReveal 1.2s ease-out forwards;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+  margin-bottom: 10px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full-width {
+  margin-bottom: 20px;
+}
+
+label {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  margin-bottom: 8px;
+  font-weight: 500;
+  text-align: start;
+}
+
+input,
+textarea {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 18px;
+  font-size: 14px;
+  color: gray;
+  outline: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+input {
+  height: 30px;
+  width: 300px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #999;
+}
+
+input:focus,
+textarea:focus {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background-image: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  background-size: 200% 100%;
+  box-shadow: 0 0 15px rgba(255, 192, 203, 0.2);
+  animation: shimmer 2s infinite linear;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+  width: 640px;
+}
+
+.send-btn {
+  border: none;
+  border-radius: 10px;
+  width: 95%;
+  max-width: 640px;
+  height: 45px;
+  color: white;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.send-btn.disabled {
+  cursor: not-allowed;
+  filter: grayscale(1);
+  box-shadow: none !important;
+}
+
+.send-btn.active {
+  background: pink !important;
+  color: black !important;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(255, 192, 203, 0.6) !important;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.clear-btn {
+  width: 95%;
+  max-width: 640px;
+  height: 45px;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 8px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.clear-btn:hover {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.success-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.checkmark {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 2;
+  stroke: #39ff14;
+  stroke-miterlimit: 10;
+  box-shadow: inset 0px 0px 0px #39ff14;
+  animation: fill 0.4s ease-in-out 0.4s forwards,
+    scale 0.3s ease-in-out 0.9s both;
+}
+
+.checkmark-circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  stroke: #39ff14;
+  fill: none;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.425, 1) forwards;
+}
+
+.checkmark-check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.425, 1) 0.8s forwards;
+}
+
+.success-text {
+  color: #39ff14;
+  margin-top: 20px;
+  text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+}
+
+.success-subtext {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+@keyframes glassReveal {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes scale {
+  0%,
+  100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+}
+
+@keyframes fill {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px rgba(57, 255, 20, 0.1);
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-section {
+    width: 100%;
+    margin-top: -10px;
+  }
+
+  .contact-form {
+    gap: 5px;
+    padding: 30px 20px;
+  }
+
+  .blob {
+    width: 400px;
+    height: 400px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 5px;
+  }
+
+  input {
+    width: 90vw;
+  }
+
+  .send-btn,
+  .clear-btn {
+    width: 90vw;
+  }
+
+  textarea {
+    width: 90vw;
+  }
+}
