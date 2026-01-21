@@ -1,20 +1,65 @@
-import React, { useState } from "react";
+import emailjs from "@emailjs/browser";
+import React, { useState, useEffect } from "react";
 import "../styles/ContactForm.css";
 
 function ContactForm() {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    message: "",
+  const [formData, setFormData] = useState(() => {
+    const savedData = localStorage.getItem("contactFormData");
+    return savedData
+      ? JSON.parse(savedData)
+      : {
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          message: "",
+        };
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSent, setIsSent] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+
+  useEffect(() => {
+    localStorage.setItem("contactFormData", JSON.stringify(formData));
+  }, [formData]);
+
+  const validateField = (id, value) => {
+    let errorMsg = "";
+
+    switch (id) {
+      case "firstName":
+      case "lastName":
+        if (value.length <= 2) errorMsg = "Must be at least 3 characters,";
+        break;
+      case "email":
+        if (!/\S+@\S+\.\S+/.test(value))
+          errorMsg = "Please enter a valid email";
+        break;
+      default:
+        break;
+    }
+
+    setErrors((prev) => ({ ...prev, [id]: errorMsg }));
+  };
 
   const handleChange = (e) => {
+    const { id, value } = e.target;
+
     setFormData({
       ...formData,
-      [e.target.id]: e.target.value,
+      [id]: value,
     });
+
+    if (touched[id]) {
+      validateField(id, value);
+    }
+  };
+
+  const handleBlur = (e) => {
+    const { id, value } = e.target;
+    setTouched((prev) => ({ ...prev, [id]: true }));
+    validateField(id, value);
   };
 
   const handleClear = () => {
@@ -25,6 +70,9 @@ function ContactForm() {
       phone: "",
       message: "",
     });
+    setErrors({});
+    setTouched({});
+    localStorage.removeItem("contactFormData");
   };
 
   const isFirstNameValid = formData.firstName.length > 2;
@@ -36,16 +84,44 @@ function ContactForm() {
   const isFormValid =
     isFirstNameValid && isLastNameValid && isEmailValid && isPhoneNumberValid;
 
-  const [isSent, setIsSent] = useState(false);
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSent(true);
 
-    setTimeout(() => {
-      setIsSent(false);
-      handleClear();
-    }, 5000);
+    setIsLoading(true);
+
+    const templateParams = {
+      from_name: `${formData.firstName} ${formData.lastName}`,
+      from_email: formData.email,
+      phone: formData.phone,
+      message: formData.message,
+    };
+
+    emailjs
+      .send(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+        templateParams,
+        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+      )
+      .then((response) => {
+        console.log("SUCCESS!", response.status, response.text);
+        console.log(
+          "Public Key check:",
+          process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+        );
+        setIsSent(true);
+        setIsLoading(false);
+
+        setTimeout(() => {
+          setIsSent(false);
+          handleClear();
+        }, 5000);
+      })
+      .catch((err) => {
+        console.error("FAILED...", err);
+        setIsLoading(false);
+        alert("Error: " + JSON.stringify(err));
+      });
   };
 
   return (
@@ -84,7 +160,14 @@ function ContactForm() {
                 value={formData.firstName}
                 placeholder="Jonathan"
                 onChange={handleChange}
+                onBlur={handleBlur}
+                className={
+                  touched.firstName && errors.firstName ? "input-error" : ""
+                }
               />
+              {touched.firstName && errors.firstName && (
+                <span className="error-msg"> {errors.firstName} </span>
+              )}
             </div>
 
             <div className="form-group">
@@ -95,7 +178,14 @@ function ContactForm() {
                 value={formData.lastName}
                 placeholder="James"
                 onChange={handleChange}
+                onBlur={handleBlur}
+                className={
+                  touched.lastName && errors.lastName ? "input-error" : ""
+                }
               />
+              {touched.lastName && errors.lastName && (
+                <span className="error-msg"> {errors.lastName} </span>
+              )}
             </div>
           </div>
 
@@ -108,7 +198,12 @@ function ContactForm() {
                 value={formData.email}
                 placeholder="Jonathan2718@gmail.com"
                 onChange={handleChange}
+                onBlur={handleBlur}
+                className={touched.email && errors.email ? "input-error" : ""}
               />
+              {touched.email && errors.email && (
+                <span className="error-msg"> {errors.email} </span>
+              )}
             </div>
 
             <div className="form-group">
@@ -116,7 +211,7 @@ function ContactForm() {
               <input
                 type="tel"
                 id="phone"
-                value={formData.phonenumber}
+                value={formData.phone}
                 placeholder="123-456-7890"
                 onChange={handleChange}
               />
@@ -139,13 +234,26 @@ function ContactForm() {
 
           <button
             type="submit"
-            disabled={!isFormValid}
-            className={isFormValid ? "send-btn active" : "send-btn disabled"}
+            disabled={!isFormValid || isLoading}
+            className={
+              isFormValid && !isLoading
+                ? "send-btn active"
+                : "send-btn disabled"
+            }
           >
-            {isFormValid ? "Send message" : "Please fill all fields"}
+            {isLoading
+              ? "Sending..."
+              : isFormValid
+              ? "Send message"
+              : "Please fill all fields"}
           </button>
 
-          <button type="button" onClick={handleClear} className="clear-btn">
+          <button
+            type="button"
+            onClick={handleClear}
+            className="clear-btn"
+            disabled={isLoading}
+          >
             Clear Form
           </button>
         </form>

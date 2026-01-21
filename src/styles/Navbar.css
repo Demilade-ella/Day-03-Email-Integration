@@ -75,7 +75,7 @@
   color: #ffffff;
 }
 
-@media (max-width: 1600px) {
+@media (max-width: 1200px) {
   .navbar-logo {
     margin-left: -50px;
   }

@@ -1,4 +1,361 @@
-.App {
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.app {
   font-family: sans-serif;
   text-align: center;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100dvh;
+  width: 100%;
+  transition: background-color 0.5s ease;
+}
+
+.theme-toggle-btn {
+  position: relative;
+  top: 48px;
+  right: -358px;
+  background: transparent;
+  border: 1px solid var(--btn-border-color);
+  width: 50px;
+  height: 25px;
+  padding: 1px;
+  border-radius: 20px;
+  z-index: 10;
+}
+
+.theme-toggle-btn .toggle {
+  position: absolute;
+  top: -13px;
+  right: -0.5px;
+  width: 50px;
+  height: 50px;
+  color: var(--toggle-color);
+  transition: 0.5s ease;
+}
+
+.dark-theme {
+  --bg-color: black;
+  --text-color: white;
+  --input-bg: #1a1a1a;
+  --btn-border-color: #ffffff;
+  --toggle-color: #ffffff;
+}
+
+.dark-theme .form-input,
+.dark-theme .message-form-input {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+.dark-theme .send-btn {
+  background: rgba(255, 192, 203, 0.2);
+}
+
+.dark-theme .clear-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.dark-theme .navbar-links .active {
+  background: rgba(255, 255, 255, 0.8);
+  color: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme .send-btn.active {
+  background: rgba(255, 255, 255, 0.4) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.6) !important;
+}
+
+.dark-theme .btn {
+  background: transparent;
+  color: #ffffff;
+  border: none;
+}
+
+.dark-theme .btn.get-btn {
+  background: rgba(255, 255, 255, 0.8);
+  color: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme .navbar-links.open {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 0px;
+}
+
+.light-theme {
+  --bg-color: #f0f0f0;
+  --text-color: #000000;
+  --input-bg: #ffffff;
+  --btn-border-color: #000000;
+  --toggle-color: #000000;
+}
+
+.light-theme .form-input,
+.light-theme .message-form-input {
+  background: rgba(0, 0, 0, 0.05);
+  color: #333;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.light-theme label {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.light-theme .send-btn,
+.light-theme .clear-btn {
+  background: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  border: none;
+}
+
+.light-theme .navbar-links {
+  border: 1px solid #000000 !important;
+}
+
+.light-theme .navbar-links .active {
+  background: rgba(0, 0, 0, 0.05);
+  color: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.light-theme .send-btn.disabled {
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: #333 !important;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.light-theme .btn {
+  background: transparent;
+  color: #000000;
+  border: none;
+}
+
+.light-theme .btn.get-btn {
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: #000000 !important;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.light-theme .navbar-links.open {
+  background: rgba(255, 255, 0, 0.1);
+  border: none;
+  border-radius: 0px;
+}
+
+.light-theme .blob-container {
+  filter: blur(0px);
+}
+
+.light-theme .mobile-icon {
+  color: #000000;
+}
+
+.blob-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  filter: blur(10px);
+}
+
+.blob {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: move 20s infinite alternate;
+}
+
+.blob.pink {
+  background: #ff1493;
+  top: 10%;
+  left: 10%;
+}
+
+.blob.purple {
+  background: #8a2be2;
+  bottom: 10%;
+  right: 20%;
+  animation-delay: -5s;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes move {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(100px, 100px) scale(1.2);
+  }
+}
+
+@media (max-width: 1600px) {
+  .theme-toggle-btn {
+    height: 20px;
+    width: 40px;
+    margin-left: 200px;
+    right: -128px;
+  }
+
+  .theme-toggle-btn .toggle {
+    top: -14px;
+    right: -6px;
+    height: 45px;
+  }
+
+  .blob.pink {
+    top: 10%;
+    left: 10%;
+  }
+
+  .blob.purple {
+    bottom: 10%;
+    right: 20%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .theme-toggle-btn {
+    height: 20px;
+    width: 40px;
+    margin-left: 200px;
+    right: -128px;
+    top: 40px;
+  }
+
+  .theme-toggle-btn .toggle {
+    top: -14px;
+    right: -6px;
+    height: 45px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .blob {
+    width: 280px;
+    height: 280px;
+  }
+
+  .blob.pink {
+    top: 10%;
+    left: 5%;
+  }
+
+  .blob.purple {
+    bottom: 10%;
+    right: 25%;
+  }
+}
+
+@media (max-width: 700px) {
+  .blob {
+    width: 250px;
+    height: 250px;
+  }
+
+  .blob.pink {
+    top: 10%;
+    left: 5%;
+  }
+
+  .blob.purple {
+    bottom: 6%;
+    right: 15%;
+  }
+}
+
+@media (max-width: 620px) {
+  .theme-toggle-btn {
+    height: 15px;
+    width: 30px;
+    top: 38px;
+    right: -38px;
+  }
+
+  .theme-toggle-btn .toggle {
+    height: 40px;
+    width: 32px;
+    top: -13px;
+    right: -2px;
+  }
+
+  .blob {
+    width: 250px;
+    height: 250px;
+  }
+
+  .blob.pink {
+    top: 6%;
+    left: -5%;
+  }
+
+  .blob.purple {
+    bottom: 10%;
+    right: 10%;
+  }
+}
+
+@media (max-width: 416px) {
+  .theme-toggle-btn {
+    right: -5px;
+  }
+
+  .blob {
+    width: 150px;
+    height: 150px;
+  }
+
+  .blob.pink {
+    top: 10%;
+    left: -5%;
+  }
+
+  .blob.purple {
+    bottom: 5%;
+    right: 15%;
+  }
+}
+
+@media (max-width: 344px) {
+  .theme-toggle-btn {
+    right: 20px;
+  }
+
+  .blob {
+    width: 150px;
+    height: 150px;
+  }
+
+  .blob.pink {
+    top: 10%;
+    left: -5%;
+  }
+
+  .blob.purple {
+    bottom: 5%;
+    right: 15%;
+  }
 }

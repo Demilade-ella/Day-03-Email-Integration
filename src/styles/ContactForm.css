@@ -178,6 +178,19 @@ textarea {
   font-size: 0.9rem;
 }
 
+.input error {
+  border: 1px solid rgba(255, 77, 77, 0.5) !important;
+  box-shadow: 0 0 10px rgba(255, 77, 77, 0.2);
+}
+
+.error-msg {
+  color: #ff4d4d;
+  font-size: 0.7rem;
+  font-weight: 500;
+  margin-top: 4px;
+  animation: slideIn 0.3s ease-out;
+}
+
 @keyframes glassReveal {
   from {
     opacity: 0;
@@ -219,6 +232,17 @@ textarea {
 @keyframes fill {
   100% {
     box-shadow: inset 0px 0px 0px 30px rgba(57, 255, 20, 0.1);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
