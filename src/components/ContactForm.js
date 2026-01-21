@@ -30,11 +30,14 @@ function ContactForm() {
     switch (id) {
       case "firstName":
       case "lastName":
-        if (value.length <= 2) errorMsg = "Must be at least 3 characters,";
+        if (value.length <= 2) errorMsg = "Must be at least 3 characters";
         break;
       case "email":
         if (!/\S+@\S+\.\S+/.test(value))
           errorMsg = "Please enter a valid email";
+        break;
+      case "phone":
+        if (value.length <= 10) errorMsg = "Please enter a valid phone number";
         break;
       default:
         break;
@@ -78,8 +81,7 @@ function ContactForm() {
   const isFirstNameValid = formData.firstName.length > 2;
   const isLastNameValid = formData.lastName.length > 2;
   const isEmailValid = /\S+@\S+\.\S+/.test(formData.email);
-  const phoneRegex = /^\d{10,11}$/;
-  const isPhoneNumberValid = phoneRegex.test(formData.phone);
+  const isPhoneNumberValid = formData.phone.length > 10;
 
   const isFormValid =
     isFirstNameValid && isLastNameValid && isEmailValid && isPhoneNumberValid;
@@ -209,12 +211,17 @@ function ContactForm() {
             <div className="form-group">
               <label htmlFor="phone">Phone number</label>
               <input
-                type="tel"
+                type="number"
                 id="phone"
                 value={formData.phone}
                 placeholder="123-456-7890"
                 onChange={handleChange}
+                onBlur={handleBlur}
+                className={touched.phone && errors.phone ? "input-error" : ""}
               />
+              {touched.phone && errors.phone && (
+                <span className="error-msg"> {errors.phone} </span>
+              )}
             </div>
           </div>
 
